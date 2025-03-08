@@ -1,20 +1,43 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
 
 const Signup = () => {
   const [user, setUser] = useState({ name: "", email: "", password: "" });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    axios.get('api/v1/user/register')
+    .then((response)=>(
+      setUser(response.data)
+    ))
+    .catch((error)=>(
+      console.log(error)
+    ))
+  },[])
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    localStorage.setItem("user", JSON.stringify(user)); // Store user data
-    navigate("/login"); // Redirect to login
+    setError("");
+    setSuccess("")
+    try {
+      const response =await axios.post("/api/v1/user/register", user); 
+      setSuccess("Registration successful");
+      setTimeout(() => {
+        navigate("/login");
+      },2000)
+    } catch (error) {
+      setError(error.response?.data?.message||"Something went wrong"); 
+    }
   };
+
 
   return (
     <div className="container d-flex justify-content-center align-items-center min-vh-100">

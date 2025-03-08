@@ -1,20 +1,39 @@
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+import { ApiError } from "../utils/apiError.js"
+import {asyncHandler} from "../utils/asyncHandler.js"
+import jwt from "jsonwebtoken"
+import {User} from "../models/User.models.js"
 
-const authMiddleware = async (req, res, next) => {
-  const token = req.header("Authorization");
 
-  if (!token) {
-    return res.status(401).json({ message: "No token, authorization denied" });
-  }
+//no need of res so we used "_"
+export const verifyJWT=asyncHandler(async(req,_,next)=>{
+    try {
+        const token=req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ","") 
+        //taking accessToken From the cookies if in mobile from the header 
+        if(!token){
+            throw new ApiError(401,"Unauthorized Author")
+        }
+        const decodedToken=jwt.verify(token,process.env.ACCESS_TOKEN_SECRET)
+        //comparing access with the cookies stored 
+    
+        const user=await User.findById(decodedToken?._id).
+        select("-password -refreshToken")
+    
+        if(!user){
+            throw new ApiError(401,"Invalid Access Token");
+            
+        }
 
-  try {
-    const decoded = jwt.verify(token.replace("Bearer ", ""), process.env.JWT_SECRET);
-    req.user = await User.findById(decoded.userId).select("-password");
+        req.user=user
+        next()
+    } catch (error) {
+        throw new ApiError(401,error?.message || "Invalid Access Token")
+    }
+
+})
+
+export const verifyAdmin = asyncHandler(async (req, _, next) => {
+    if (!req.user || req.user.role !== "admin") {
+        throw new ApiError(403, "Access Denied! Admins Only.");
+    }
     next();
-  } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
-  }
-};
-
-export default authMiddleware;
+});
