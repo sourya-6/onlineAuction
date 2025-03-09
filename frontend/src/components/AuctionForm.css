@@ -1,0 +1,66 @@
+/* AuctionForm Styles */
+.auction-form {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Input Fields */
+.auction-form .form-control {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: none;
+    padding: 10px;
+    background-color: #f8f9fa;
+}
+
+/* Remove focus outline */
+.auction-form .form-control:focus {
+    border-color: #007bff;
+    box-shadow: none;
+}
+
+/* Flat Button */
+.auction-form .btn-primary {
+    background: #007bff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    transition: background 0.3s ease-in-out;
+    width: 100%;
+}
+
+.auction-form .btn-primary:hover {
+    background: #0056b3;
+}
+
+/* Reduce spacing */
+.auction-form .form-group {
+    margin-bottom: 12px;
+}
+.auction-form {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.image-preview-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.preview-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}

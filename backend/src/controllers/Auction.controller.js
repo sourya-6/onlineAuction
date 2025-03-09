@@ -37,15 +37,28 @@ export const createAuction = asyncHandler(async (req, res) => {
 });
 
 // ✅ Get All Auctions
-export const getAllAuctions = asyncHandler(async (req, res) => {
-    const auctions = await Auction.find().sort({ createdAt: -1 });
 
-    if (!auctions.length) {
-        throw new ApiError(404, "No auctions found");
-    }
+export const getAllAuctions = async (req, res) => {
+  try {
+    const auctions = await Auction.find()
+      .populate("highestBidder", "name email") // ✅ Fetch name & email
+      .sort({ endTime: -1 });
 
-    res.status(200).json(new ApiResponse(200, auctions, "Auctions retrieved successfully"));
-});
+    return res.status(200).json({
+      success: true,
+      message: "All auctions fetched successfully",
+      data: auctions,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
+};
+
+
+
 
 // ✅ Get Single Auction
 export const getAuctionById = asyncHandler(async (req, res) => {

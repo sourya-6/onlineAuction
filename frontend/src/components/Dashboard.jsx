@@ -9,9 +9,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user"); // ✅ Get user data
-   
+   const {user}=user;
+   console.log(user.name);
     if (storedUser) {
-      setUser(storedUser);
+      setUser(user.name);
     } else {
       navigate("/login"); // ✅ Redirect if no user found
     }
@@ -22,6 +23,7 @@ const Dashboard = () => {
       await axios.post("/api/v1/user/logout", { withCredentials: true });
       localStorage.removeItem("token"); 
       localStorage.removeItem("user");  // ✅ Remove user data
+     
       navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error.response?.data?.message || error.message);

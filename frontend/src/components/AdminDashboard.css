@@ -1,0 +1,65 @@
+/* Admin Dashboard Container */
+.admin-dashboard {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+.admin-dashboard h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Table Styling */
+.admin-dashboard table {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Table Header */
+.admin-dashboard thead {
+    background: #007bff;
+    color: white;
+}
+
+/* Alternating row colors */
+.admin-dashboard tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+/* Pagination Buttons */
+.admin-dashboard .pagination-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.admin-dashboard .btn {
+    border-radius: 5px;
+    padding: 8px 15px;
+}
+
+/* Create Auction Button */
+.admin-dashboard .create-auction-btn {
+    display: block;
+    margin: 20px auto;
+    width: 100%;
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 600;
+    transition: background 0.3s;
+    border: none;
+}
+
+.admin-dashboard .create-auction-btn:hover {
+    background: #0056b3;
+}

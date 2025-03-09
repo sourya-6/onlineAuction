@@ -9,10 +9,12 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Handle input changes
   const handleChange = (e) => {
     setLoginDetails({ ...loginDetails, [e.target.name]: e.target.value });
   };
 
+  // Handle login submission
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -23,14 +25,18 @@ const Login = () => {
         withCredentials: true,
       });
 
-      const { user, token } = response.data.data;
+      console.log("Login Response:", response.data); // ✅ Debug log
 
-      // ✅ Store full user object and token
+      // ✅ Corrected destructuring
+      const user = response.data.data; // Correct user data extraction
+      const token = response.data.token || null; // Handle missing token
+
+      // ✅ Store user & token safely
       localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("token", token);
-      console.log(user)
-      console.log("Logged in user:", user.name);
-      console.log("user role:", user.role);
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+
       alert(`Welcome, ${user.name}!`);
 
       // ✅ Redirect based on role

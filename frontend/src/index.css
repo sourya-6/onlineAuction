@@ -66,3 +66,35 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Form Inputs */
+.form-control {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: none;
+  padding: 10px;
+}
+
+/* Remove focus outline */
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: none;
+}
+
+/* Flat Button */
+.btn-primary {
+  background: #007bff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  transition: background 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+}
+
+/* Remove extra spacing between form elements */
+.form-group {
+  margin-bottom: 12px;
+}
