@@ -8,6 +8,7 @@ import { ApiResponse } from "../utils/apiResponse.js";
 // 📝 Register User
 export const register = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
+  if(!name || !email || !password) throw new ApiError(400, "All fields are required");
 
   if (await User.findOne({ email })) {
     throw new ApiError(400, "Email is already registered");
@@ -19,27 +20,34 @@ export const register = asyncHandler(async (req, res) => {
 });
 
 // 📝 Register Admin
-export const registerAdmin = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+// export const registerAdmin = asyncHandler(async (req, res) => {
+//   const { name, email, password } = req.body;
 
-  if (await User.findOne({ email })) {
-    throw new ApiError(400, "Admin already exists");
-  }
+//   if (await User.findOne({ email })) {
+//     throw new ApiError(400, "Admin already exists");
+//   }
 
-  const admin = await User.create({ name, email, password, role: "admin" });
+//   const admin = await User.create({ name, email, password, role: "admin" });
 
-  res.status(201).json(new ApiResponse(201, {}, "Admin registered successfully"));
-});
+//   res.status(201).json(new ApiResponse(201, {}, "Admin registered successfully"));
+// });//
 
 // 📝 Login User
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+
+  if(!email.trim()||!password.trim()){
+    throw new ApiError(401,"Please Enter the Details")
+  }
   const user = await User.findOne({ email });
 
-  if (!user || !(await user.isPasswordCorrect(password))) {
-    throw new ApiError(401, "Invalid credentials");
+  if (!user ){
+    throw new ApiError(401, "User not available with specified details");
   }
-
+  const passwordCheck=await user.isPasswordCorrect(password)
+  if(!passwordCheck){
+    throw new ApiError(401,"Invalid credentials")
+  }
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
 
@@ -48,6 +56,7 @@ export const login = asyncHandler(async (req, res) => {
 
   res.cookie("accessToken", accessToken, { httpOnly: true, secure: true });
   res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
+  
 
   res.json(new ApiResponse(200, { id: user._id, name: user.name, email: user.email, role: user.role }, "Login successful"));
 });
